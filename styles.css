@@ -1,5 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+}
+
+body {
+    font-family: "Roboto", serif;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+input {
+    height: 40px;
+    margin-bottom: 25px;
+}
+
+.calculator {
+    padding: 20px 30px;
+    border: 5px solid black;
+    display: flex;
+    flex-direction: column;
+}
+
+.calculator-buttons {
+    max-width: 450px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 25px 15px;
+}
+
+.calculator-buttons button {
+    flex-basis: calc(100% / 4 - 15px);
+    font-size: 24px;
+    height: 40px;
+}
+
+.red {
+    background-color: red;
 }
