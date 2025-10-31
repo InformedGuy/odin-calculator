@@ -3,25 +3,18 @@ let secondNumber = 0;
 let operator = "";
 
 function operate(x, symbol, y) {
-    let result = 0;
     switch(symbol) {
         case "+":
-            result = add(x, y);
-            break;
+            return add(x, y);
         case "-":
-            result = subtract(x, y);
-            break;
+            return subtract(x, y);
         case "*":
-            result = multiply(x, y);
-            break;
+            return multiply(x, y);
         case "/":
-            result = divide(x, y);
-            break;
+            return divide(x, y);
         default:
             alert("Invalid symbol!");
     }
-
-    return result;
 }
 
 function add(first, second) {

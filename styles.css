@@ -17,6 +17,8 @@ body {
 input {
     height: 40px;
     margin-bottom: 25px;
+    font-size: 20px;
+    text-align: right;
 }
 
 .calculator {
@@ -42,4 +44,12 @@ input {
 
 .red {
     background-color: red;
+}
+
+.green {
+    background-color: green;
+}
+
+.blue {
+    background-color: rgb(0, 102, 255);
 }
