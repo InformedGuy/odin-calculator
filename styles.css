@@ -42,14 +42,14 @@ input {
     height: 40px;
 }
 
-.red {
+#clear {
     background-color: red;
 }
 
-.green {
+#result {
     background-color: green;
 }
 
-.blue {
+.operator {
     background-color: rgb(0, 102, 255);
 }
