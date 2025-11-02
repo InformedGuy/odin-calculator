@@ -42,6 +42,11 @@ numberButtons.forEach(button => {
 
 operators.forEach(operator => {
     operator.addEventListener("click", (event) => {
+
+        if (hasPairOfNumbers()) {
+            getResult();
+        }
+
         display.value += ` ${event.target.textContent} `;
     });
 });
@@ -56,11 +61,14 @@ function getResult() {
     let userInput = display.value.split(" ");
     if (userInput.length === 3) {
         display.value = operate(...userInput);
-    } else {
-        alert("Invalid arguments!");
     }
 }
 
 function clearDisplay() {
     display.value = "";
+}
+
+function hasPairOfNumbers() {
+    let userInput = display.value.split(" ");
+    return userInput.length === 3;
 }
