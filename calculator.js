@@ -1,19 +1,20 @@
 function operate(x, symbol, y) {
-    let intX = parseInt(x);
-    let intY = parseInt(y);
+
+    let numberX = toNumber(x);
+    let numberY = toNumber(y);
 
     switch(symbol) {
         case "+":
-            return add(intX, intY);
+            return add(numberX, numberY);
         case "-":
-            return subtract(intX, intY);
+            return subtract(numberX, numberY);
         case "*":
-            return multiply(intX, intY);
+            return multiply(numberX, numberY);
         case "÷":
-            if (intY === 0) {
+            if (numberY === 0) {
                 alert("Cannot divide a number by 0");
             } else {
-                return divide(intX, intY);
+                return divide(numberX, numberY)
             }
     }
 }
@@ -96,3 +97,19 @@ function hasPairOfNumbers() {
     let userInput = display.value.split(" ");
     return userInput.length === 3;
 }
+
+function toNumber(number) {
+    if (number.includes(".")) {
+        return parseFloat(number);
+    } else {
+        return parseInt(number);
+    }
+}
+
+const decimalButton = document.getElementById("decimal");
+decimalButton.addEventListener("click", () => {
+    let userInput = display.value.split(" ");
+    if (!userInput[userInput.length - 1].includes(".")) {
+        display.value += ".";
+    }
+})

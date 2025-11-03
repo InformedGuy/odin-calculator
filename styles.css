@@ -53,3 +53,7 @@ input {
 .operator {
     background-color: rgb(0, 102, 255);
 }
+
+#decimal {
+    background-color: yellow;
+}
