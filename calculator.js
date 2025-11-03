@@ -112,4 +112,15 @@ decimalButton.addEventListener("click", () => {
     if (!userInput[userInput.length - 1].includes(".")) {
         display.value += ".";
     }
-})
+});
+
+const deleteButton = document.getElementById("delete");
+deleteButton.addEventListener("click", () => {
+    let userInput = display.value;
+    const valid = /[0-9.]/;
+    let lastChar = userInput.at(-1);
+
+    if (valid.test(lastChar)) {
+        display.value = userInput.slice(0, -1);
+    }
+});

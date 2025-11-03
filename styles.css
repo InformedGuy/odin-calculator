@@ -57,3 +57,7 @@ input {
 #decimal {
     background-color: yellow;
 }
+
+#delete {
+    background-color: orange;
+}
