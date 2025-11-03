@@ -41,6 +41,11 @@ const display = document.getElementById("display");
 
 numberButtons.forEach(button => {
     button.addEventListener("click", (event) => {
+        if (isResult) {
+            display.value = "";
+            isResult = false;
+        } 
+
         display.value += event.target.textContent;
     });
 });
@@ -59,6 +64,10 @@ operators.forEach(operator => {
 
         if (hasPairOfNumbers()) {
             getResult();
+        }
+
+        if (isResult) {
+            isResult = false;
         }
 
         display.value += ` ${event.target.textContent} `;
@@ -86,6 +95,8 @@ function getResult() {
         }
 
         display.value = result;
+
+        isResult = true;
     }
 }
 
@@ -124,3 +135,5 @@ deleteButton.addEventListener("click", () => {
         display.value = userInput.slice(0, -1);
     }
 });
+
+let isResult = false;
