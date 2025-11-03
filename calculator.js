@@ -60,7 +60,18 @@ clearButton.addEventListener("click", clearDisplay);
 function getResult() {
     let userInput = display.value.split(" ");
     if (userInput.length === 3) {
-        display.value = operate(...userInput);
+        let result = operate(...userInput);
+        let decimalIndex = result.toString().indexOf(".");
+
+        if (decimalIndex >= 0) {
+            let decimalPlace = result.toString().length - decimalIndex - 1;
+            if (decimalPlace > 5) {
+                display.value = result.toFixed(5);
+                return;
+            }
+        }
+
+        display.value = result;
     }
 }
 
