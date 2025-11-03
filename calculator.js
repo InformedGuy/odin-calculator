@@ -9,8 +9,12 @@ function operate(x, symbol, y) {
             return subtract(intX, intY);
         case "*":
             return multiply(intX, intY);
-        default:
-            return divide(intX, intY);
+        case "÷":
+            if (intY === 0) {
+                alert("Cannot divide a number by 0");
+            } else {
+                return divide(intX, intY);
+            }
     }
 }
 
@@ -42,6 +46,15 @@ numberButtons.forEach(button => {
 
 operators.forEach(operator => {
     operator.addEventListener("click", (event) => {
+
+        const symbols = /[+\-*÷]/;
+        let secondLast = display.value.slice(-2, -1);
+
+        if (symbols.test(secondLast)) {
+            let userInput = display.value;
+            display.value = userInput.replace(symbols, event.target.textContent);
+            return;
+        }
 
         if (hasPairOfNumbers()) {
             getResult();
