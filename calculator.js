@@ -1,3 +1,31 @@
+const numberButtons = document.querySelectorAll(".number");
+const operators = document.querySelectorAll(".operator");
+const display = document.getElementById("display");
+
+numberButtons.forEach(button => {
+    button.addEventListener("click", addNumber);
+});
+
+operators.forEach(operator => {
+    operator.addEventListener("click", addOperator);
+});
+
+const result = document.getElementById("result");
+result.addEventListener("click", getResult);
+
+const clearButton = document.getElementById("clear");
+clearButton.addEventListener("click", clearDisplay);
+
+const decimalButton = document.getElementById("decimal");
+decimalButton.addEventListener("click",addDecimal);
+
+const backspaceButton = document.getElementById("backspace");
+backspaceButton.addEventListener("click", backSpace);
+
+let isResult = false;
+
+display.addEventListener("keydown", keyboardInput);
+
 function operate(x, symbol, y) {
 
     let numberX = toNumber(x);
@@ -35,50 +63,52 @@ function divide(first, second) {
     return first / second;
 }
 
-const numberButtons = document.querySelectorAll(".number");
-const operators = document.querySelectorAll(".operator");
-const display = document.getElementById("display");
+function addNumber(numberEvent) {
+    let number = 0;
 
-numberButtons.forEach(button => {
-    button.addEventListener("click", (event) => {
-        if (isResult) {
-            display.value = "";
-            isResult = false;
-        } 
+    if (numberEvent.type === "click") {
+        number = numberEvent.target.textContent;
+    } else {
+        number = numberEvent.key;
+    }
 
-        display.value += event.target.textContent;
-    });
-});
+    if (isResult) {
+        display.value = "";
+        isResult = false;
+    } 
 
-operators.forEach(operator => {
-    operator.addEventListener("click", (event) => {
+    display.value += number;
+}
 
-        const symbols = /[+\-*÷]/;
-        let secondLast = display.value.slice(-2, -1);
+function addOperator(operatorEvent) {
+    let operation = "";
 
-        if (symbols.test(secondLast)) {
-            let userInput = display.value;
-            display.value = userInput.replace(symbols, event.target.textContent);
-            return;
-        }
+    if (operatorEvent.type === "click") {
+        operation = operatorEvent.target.textContent;
+    } else {
+        operation = (operatorEvent.key === "/") ? "÷" : operatorEvent.key;
+    }
 
-        if (hasPairOfNumbers()) {
-            getResult();
-        }
+    const symbols = /[+\-*÷]/;
+    let secondLast = display.value.slice(-2, -1);
 
-        if (isResult) {
-            isResult = false;
-        }
+    if (symbols.test(secondLast)) {
+        let userInput = display.value;
+        display.value = userInput.replace(symbols, operation);
+        return;
+    }
 
-        display.value += ` ${event.target.textContent} `;
-    });
-});
+    if (hasPairOfNumbers()) {
+        getResult();
+    }
 
-const result = document.getElementById("result");
-result.addEventListener("click", getResult);
+    if (isResult) {
+        isResult = false;
+    }
 
-const clearButton = document.getElementById("clear");
-clearButton.addEventListener("click", clearDisplay);
+    display.value += ` ${operation} `;
+
+}
 
 function getResult() {
     let userInput = display.value.split(" ");
@@ -117,16 +147,14 @@ function toNumber(number) {
     }
 }
 
-const decimalButton = document.getElementById("decimal");
-decimalButton.addEventListener("click", () => {
+function addDecimal(event) {
     let userInput = display.value.split(" ");
     if (!userInput[userInput.length - 1].includes(".")) {
         display.value += ".";
     }
-});
+}
 
-const deleteButton = document.getElementById("delete");
-deleteButton.addEventListener("click", () => {
+function backSpace() {
     let userInput = display.value;
     const valid = /[0-9.]/;
     let lastChar = userInput.at(-1);
@@ -134,6 +162,27 @@ deleteButton.addEventListener("click", () => {
     if (valid.test(lastChar)) {
         display.value = userInput.slice(0, -1);
     }
-});
+}
 
-let isResult = false;
+function keyboardInput(keyEvent) {
+    keyEvent.preventDefault();
+
+    let key = keyEvent.key;
+
+    const numbers = /\d/;
+    const symbols = /[+\-*/]/;
+
+    if (numbers.test(key)) {
+        addNumber(keyEvent);
+    } else if (symbols.test(key)) {
+        addOperator(keyEvent);
+    } else if (key === "Delete") {
+        clearDisplay();
+    } else if (key === "Backspace") {
+        backSpace();
+    } else if (key === "Enter") {
+        getResult();
+    } else if (key === ".") {
+        addDecimal();
+    }
+}
