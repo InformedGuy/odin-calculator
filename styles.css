@@ -29,7 +29,7 @@ input {
 }
 
 .calculator-buttons {
-    max-width: 450px;
+    max-width: 400px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -54,10 +54,12 @@ input {
     background-color: rgb(0, 102, 255);
 }
 
-#decimal {
+#decimal,
+#percentage,
+#power {
     background-color: yellow;
 }
 
 #backspace {
-    background-color: orange;
+    background-color: rgb(255, 145, 0);
 }

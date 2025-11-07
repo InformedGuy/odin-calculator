@@ -1,14 +1,15 @@
 const numberButtons = document.querySelectorAll(".number");
-const operators = document.querySelectorAll(".operator");
-const display = document.getElementById("display");
-
 numberButtons.forEach(button => {
     button.addEventListener("click", addNumber);
 });
 
+const operators = document.querySelectorAll(".operator");
 operators.forEach(operator => {
     operator.addEventListener("click", addOperator);
 });
+
+const display = document.getElementById("display");
+display.addEventListener("keydown", keyboardInput);
 
 const result = document.getElementById("result");
 result.addEventListener("click", getResult);
@@ -22,9 +23,13 @@ decimalButton.addEventListener("click",addDecimal);
 const backspaceButton = document.getElementById("backspace");
 backspaceButton.addEventListener("click", backSpace);
 
-let isResult = false;
+const percent = document.getElementById("percentage");
+percent.addEventListener("click", addPercent);
 
-display.addEventListener("keydown", keyboardInput);
+const power = document.getElementById("power");
+power.addEventListener("click", addPower);
+
+let isResult = false;
 
 function operate(x, symbol, y) {
 
@@ -72,6 +77,12 @@ function addNumber(numberEvent) {
         number = numberEvent.key;
     }
 
+    let lastChar = display.value.at(-1);
+
+    if (lastChar === "%") {
+        return;
+    }
+
     if (isResult) {
         display.value = "";
         isResult = false;
@@ -112,22 +123,34 @@ function addOperator(operatorEvent) {
 
 function getResult() {
     let userInput = display.value.split(" ");
+    let result = 0;
+
     if (userInput.length === 3) {
-        let result = operate(...userInput);
-        let decimalIndex = result.toString().indexOf(".");
+        result = operate(...userInput);
+    } else if (userInput.length === 1) {
 
-        if (decimalIndex >= 0) {
-            let decimalPlace = result.toString().length - decimalIndex - 1;
-            if (decimalPlace > 5) {
-                display.value = result.toFixed(5);
-                return;
-            }
+        if (!userInput[0].includes("^")) {
+            return;
         }
-
-        display.value = result;
-
-        isResult = true;
+    
+        result = Number(getPower(userInput[0]));
+    } else {
+        return;
     }
+
+    let decimalIndex = result.toString().indexOf(".");
+
+    if (decimalIndex >= 0) {
+        let decimalPlace = result.toString().length - decimalIndex - 1;
+        if (decimalPlace > 5) {
+            display.value = result.toFixed(5);
+            return;
+        }
+    }
+
+    display.value = result;
+
+    isResult = true;
 }
 
 function clearDisplay() {
@@ -140,11 +163,37 @@ function hasPairOfNumbers() {
 }
 
 function toNumber(number) {
+
+    if (number.includes("^")) {
+        number = getPower(number);
+    } else if (number.includes("%")) {
+        number = getPercent(number);
+    }
+
     if (number.includes(".")) {
         return parseFloat(number);
     } else {
         return parseInt(number);
     }
+}
+
+function getPercent(number) {
+    let result = Number(number.replace("%", "")) / 100;
+    return result.toString();
+}
+
+function getPower(numbers) {
+    let array = numbers.split("^");
+
+    if (array[1].includes("%")) {
+        let temp = getPercent(array[1]);
+        array[1] = temp;
+    }
+
+    let base = Number(array[0]);
+    let exponent = Number(array[1]);
+    let result = Math.pow(base, exponent);
+    return result.toString();
 }
 
 function addDecimal(event) {
@@ -180,9 +229,35 @@ function keyboardInput(keyEvent) {
         clearDisplay();
     } else if (key === "Backspace") {
         backSpace();
-    } else if (key === "Enter") {
+    } else if (key === "Enter" || key === "=") {
         getResult();
     } else if (key === ".") {
         addDecimal();
+    } else if (key === "%") {
+        addPercent();
+    } else if (key === "^") {
+        addPower();
+    }
+}
+
+function isLastDigitANumber() {
+    let userInput = display.value;
+    let lastChar = userInput.at(-1);
+    return /\d/.test(lastChar);
+}
+
+function addPercent() {
+    if (isLastDigitANumber() && !isResult) {
+        display.value += "%";
+    }
+}
+
+function addPower() {
+    if (isLastDigitANumber()) {
+        display.value += "^";
+
+        if (isResult) {
+            isResult = false;
+        }
     }
 }
