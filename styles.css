@@ -19,6 +19,9 @@ input {
     margin-bottom: 25px;
     font-size: 20px;
     text-align: right;
+    border: 1px solid black;
+    border-top: none;
+    padding: 10px;
 }
 
 .calculator {
@@ -50,16 +53,31 @@ input {
     background-color: green;
 }
 
-.operator {
+.operator,
+#percentage,
+#power {
     background-color: rgb(0, 102, 255);
 }
 
-#decimal,
-#percentage,
-#power {
+#decimal {
     background-color: yellow;
 }
 
 #backspace {
     background-color: rgb(255, 145, 0);
+}
+
+textarea {
+    resize: none;
+    border: 1px solid black;
+    border-bottom: none;
+    padding: 10px;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+input:focus {
+    outline: none;
 }

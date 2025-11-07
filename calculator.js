@@ -29,6 +29,8 @@ percent.addEventListener("click", addPercent);
 const power = document.getElementById("power");
 power.addEventListener("click", addPower);
 
+const resultDisplay = document.getElementById("resultDisplay");
+
 let isResult = false;
 
 function operate(x, symbol, y) {
@@ -85,6 +87,7 @@ function addNumber(numberEvent) {
 
     if (isResult) {
         display.value = "";
+        resultDisplay.value = "";
         isResult = false;
     } 
 
@@ -125,7 +128,7 @@ function getResult() {
     let userInput = display.value.split(" ");
     let result = 0;
 
-    if (userInput.length === 3) {
+    if (userInput.length === 3 && /\d/.test(userInput[userInput.length - 1])) {
         result = operate(...userInput);
     } else if (userInput.length === 1) {
 
@@ -148,6 +151,8 @@ function getResult() {
         }
     }
 
+    resultDisplay.value = `${display.value} = ${result}`;
+    
     display.value = result;
 
     isResult = true;
@@ -155,6 +160,7 @@ function getResult() {
 
 function clearDisplay() {
     display.value = "";
+    resultDisplay.value = "";
 }
 
 function hasPairOfNumbers() {
@@ -209,8 +215,14 @@ function addDecimal() {
 }
 
 function backSpace() {
+
+    if (isResult) {
+        clearDisplay();
+        return;
+    }
+
     let userInput = display.value;
-    const valid = /[0-9.]/;
+    const valid = /[0-9.%^]/;
     let lastChar = userInput.at(-1);
 
     if (valid.test(lastChar)) {
