@@ -170,11 +170,7 @@ function toNumber(number) {
         number = getPercent(number);
     }
 
-    if (number.includes(".")) {
-        return parseFloat(number);
-    } else {
-        return parseInt(number);
-    }
+    return Number(number);
 }
 
 function getPercent(number) {
@@ -196,11 +192,20 @@ function getPower(numbers) {
     return result.toString();
 }
 
-function addDecimal(event) {
+function addDecimal() {
     let userInput = display.value.split(" ");
     if (!userInput[userInput.length - 1].includes(".")) {
         display.value += ".";
+    } else if (userInput[userInput.length - 1].includes("^")) {
+        let temp = userInput[userInput.length - 1];
+        let decimalIndex = temp.lastIndexOf(".");
+        let powerIndex = temp.indexOf("^");
+
+        if (powerIndex > decimalIndex) {
+            display.value += ".";
+        }
     }
+
 }
 
 function backSpace() {
