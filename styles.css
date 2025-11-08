@@ -12,23 +12,28 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: rgba(0, 0, 0, 0.397);
+}
+
+.screen {
+    display: flex;
+    flex-direction: column;
 }
 
 input {
     height: 40px;
-    margin-bottom: 25px;
     font-size: 20px;
     text-align: right;
-    border: 1px solid black;
-    border-top: none;
+    border: none;
     padding: 10px;
 }
 
 .calculator {
-    padding: 20px 30px;
-    border: 5px solid black;
+    padding: 30px;
     display: flex;
     flex-direction: column;
+    background-color: black;
+    border-radius: 10px;
 }
 
 .calculator-buttons {
@@ -36,13 +41,16 @@ input {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 25px 15px;
+    gap: 15px 5px;
+    margin-top: 25px;
 }
 
 .calculator-buttons button {
-    flex-basis: calc(100% / 4 - 15px);
+    flex-basis: calc(100% / 4 - 10px);
     font-size: 24px;
     height: 40px;
+    color: white;
+    border-radius: 5px;
 }
 
 #clear {
@@ -61,6 +69,7 @@ input {
 
 #decimal {
     background-color: yellow;
+    color: black;
 }
 
 #backspace {
@@ -69,9 +78,10 @@ input {
 
 textarea {
     resize: none;
-    border: 1px solid black;
-    border-bottom: none;
+    border: none;
     padding: 10px;
+    color: grey;
+    font-size: 17.5px;
 }
 
 textarea:focus {
@@ -80,4 +90,8 @@ textarea:focus {
 
 input:focus {
     outline: none;
+}
+
+.number {
+    background-color: rgb(170, 170, 170);
 }
