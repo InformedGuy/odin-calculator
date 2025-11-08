@@ -95,6 +95,10 @@ function addNumber(numberEvent) {
 }
 
 function addOperator(operatorEvent) {
+    if (display.value === "") {
+        return;
+    }
+
     let operation = "";
 
     if (operatorEvent.type === "click") {
@@ -109,6 +113,8 @@ function addOperator(operatorEvent) {
     if (symbols.test(secondLast)) {
         let userInput = display.value;
         display.value = userInput.replace(symbols, operation);
+        return;
+    } else if (display.value.at(-1) === "^") {
         return;
     }
 
@@ -128,34 +134,36 @@ function getResult() {
     let userInput = display.value.split(" ");
     let result = 0;
 
-    if (userInput.length === 3 && /\d/.test(userInput[userInput.length - 1])) {
+    if (hasPairOfNumbers()) {
         result = operate(...userInput);
-    } else if (userInput.length === 1) {
-
-        if (!userInput[0].includes("^")) {
+    } else if (userInput.length === 1 && userInput[0].includes("^")) {
+        if (userInput[0].at(-1) === "^") {
             return;
         }
-    
-        result = Number(getPower(userInput[0]));
+        result = getPower(userInput[0]);
     } else {
         return;
     }
 
-    let decimalIndex = result.toString().indexOf(".");
+    let rounded = setDecimalPlace(result);
+
+    resultDisplay.value = `${display.value} = ${rounded}`;
+    display.value = rounded;
+
+    isResult = true;
+}
+
+function setDecimalPlace(number) {
+    let decimalIndex = number.toString().indexOf(".");
 
     if (decimalIndex >= 0) {
-        let decimalPlace = result.toString().length - decimalIndex - 1;
+        let decimalPlace = number.toString().length - decimalIndex - 1;
         if (decimalPlace > 5) {
-            display.value = result.toFixed(5);
-            return;
+            return number.toFixed(5);
         }
     }
 
-    resultDisplay.value = `${display.value} = ${result}`;
-    
-    display.value = result;
-
-    isResult = true;
+    return number;
 }
 
 function clearDisplay() {
@@ -165,15 +173,14 @@ function clearDisplay() {
 
 function hasPairOfNumbers() {
     let userInput = display.value.split(" ");
-    return userInput.length === 3;
+    return userInput.length === 3 && /\d/.test(userInput[2]);
 }
 
 function toNumber(number) {
-
     if (number.includes("^")) {
-        number = getPower(number);
+        return getPower(number);
     } else if (number.includes("%")) {
-        number = getPercent(number);
+        return getPercent(number);
     }
 
     return Number(number);
@@ -181,21 +188,15 @@ function toNumber(number) {
 
 function getPercent(number) {
     let result = Number(number.replace("%", "")) / 100;
-    return result.toString();
+    return result;
 }
 
 function getPower(numbers) {
     let array = numbers.split("^");
-
-    if (array[1].includes("%")) {
-        let temp = getPercent(array[1]);
-        array[1] = temp;
-    }
-
     let base = Number(array[0]);
     let exponent = Number(array[1]);
     let result = Math.pow(base, exponent);
-    return result.toString();
+    return result;
 }
 
 function addDecimal() {
@@ -215,7 +216,6 @@ function addDecimal() {
 }
 
 function backSpace() {
-
     if (isResult) {
         clearDisplay();
         return;
@@ -242,7 +242,7 @@ function keyboardInput(keyEvent) {
         addNumber(keyEvent);
     } else if (symbols.test(key)) {
         addOperator(keyEvent);
-    } else if (key === "Delete") {
+    } else if (key === "Delete" || key === "Escape") {
         clearDisplay();
     } else if (key === "Backspace") {
         backSpace();
@@ -258,14 +258,16 @@ function keyboardInput(keyEvent) {
 }
 
 function isLastDigitANumber() {
-    let userInput = display.value;
-    let lastChar = userInput.at(-1);
+    let lastChar = display.value.at(-1);
     return /\d/.test(lastChar);
 }
 
 function addPercent() {
     if (isLastDigitANumber() && !isResult) {
-        display.value += "%";
+        let userInput = display.value.split(" ");
+        if (!userInput[userInput.length - 1].includes("^")) {
+            display.value += "%";
+        }
     }
 }
 

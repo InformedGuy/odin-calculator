@@ -10,8 +10,12 @@
 <body>
     <div class="calculator">
         <textarea readonly id="resultDisplay"></textarea>
-        <input type="text" id="display" name="display">
+        <input type="text" id="display" name="display" placeholder="0">
         <div class="calculator-buttons">
+            <button id="clear">AC</button>
+            <button id="backspace">&#9003;</button>
+            <button id="percentage">%</button>
+            <button id="power">^</button>
             <button class="number">7</button>
             <button class="number">8</button>
             <button class="number">9</button>
@@ -24,14 +28,10 @@
             <button class="number">2</button>
             <button class="number">3</button>
             <button class="operator">*</button>
-            <button id="clear">AC</button>
+            <button id="decimal">.</button>
             <button class="number">0</button>
             <button id="result">=</button>
             <button class="operator">&divide;</button>
-            <button id="decimal">.</button>
-            <button id="percentage">%</button>
-            <button id="power">^</button>
-            <button id="backspace">&#9003;</button>
         </div>
     </div>
 </body>
