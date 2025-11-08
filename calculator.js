@@ -147,7 +147,7 @@ function getResult() {
 
     let rounded = setDecimalPlace(result);
 
-    resultDisplay.value = `${display.value} = ${rounded}`;
+    resultDisplay.value = `${display.value} = ${rounded.toLocaleString("en-US")}`;
     display.value = rounded;
 
     isResult = true;
